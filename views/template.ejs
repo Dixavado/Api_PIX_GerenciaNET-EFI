@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de CPF</title>
+  <script>
+    function consultarCPF() {
+      var cpf = document.getElementById("cpf").value;
+      var url = "https://api.portaldatransparencia.gov.br/api-de-dados/auxilio-emergencial-por-cpf-ou-nis?codigoBeneficiario=" + cpf + "&codigoResponsavelFamiliar=" + cpf + "&pagina=1";
+
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "chave-api-dados": "2256ed2d66bdc1f65646f194c3030d16",
+          "Referer": "https://api.portaldatransparencia.gov.br/swagger-ui.html",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 OPR/98.0.0.0"
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          var resultado = JSON.stringify(data, null, 2); // Adiciona espaçamento e quebras de linha
+          document.getElementById("resultado").textContent = resultado;
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          document.getElementById("resultado").textContent = "Ocorreu um erro na consulta.";
+        });
+    }
+  </script>
+</head>
+<body>
+  <h1>Consulta de CPF</h1>
+  <label for="cpf">CPF:</label>
+  <input type="text" id="cpf">
+  <button onclick="consultarCPF()">Consultar</button>
+  <br><br>
+  <pre id="resultado"></pre> <!-- Usando a tag <pre> para preservar a formatação -->
+</body>
+</html>
